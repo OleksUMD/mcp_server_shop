@@ -103,6 +103,6 @@ func (s *Server) handleToolsCall(params json.RawMessage) (any, error) {
 	return result, nil
 }
 
-func (s *Server) Start(params json.RawMessage) error {
+func (s *Server) Start() error {
 	return s.rpcServer.ServeStdio()
 }
