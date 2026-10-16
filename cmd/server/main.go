@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"os"
 
 	"github.com/OleksUMD/mcp_server_shop/configs"
+	"github.com/OleksUMD/mcp_server_shop/internal/client"
 	"github.com/OleksUMD/mcp_server_shop/internal/mcp"
+	"github.com/OleksUMD/mcp_server_shop/internal/tools/products"
 	"github.com/sirupsen/logrus"
 )
 
@@ -32,8 +35,28 @@ func main() {
 		"auth_token_configures": config.AuthToken != "",
 	}).Info("Starting MCP E-commerce Server")
 
-	//restClient := client.NewRestClient(config.ApiURL, config.AuthToken, logger)
+	restClient := client.NewRestClient(config.ApiURL, config.AuthToken, logger)
 	toolRegistry := mcp.NewRegistry(logger)
+
+	products.NewProductToolset(toolRegistry, restClient, logger)
+	toolRegistry.Register(mcp.Tool{
+		Name:        "ping",
+		Description: "A simple ping tool that responds with 'pong'",
+		InputSchema: mcp.InputSchema{
+			Type:       "object",
+			Properties: map[string]mcp.Property{},
+			Required:   []string{},
+		},
+	}, func(ctx context.Context, input map[string]any) (mcp.CallToolResult, error) {
+		return mcp.CallToolResult{
+			Content: []mcp.Content{
+				{
+					Type: "text",
+					Text: "pong",
+				},
+			},
+		}, nil
+	})
 	mcpServer := mcp.NewServer(toolRegistry, logger)
 	logger.Info("Starting server on stdio transport")
 

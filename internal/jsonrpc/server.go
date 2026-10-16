@@ -56,7 +56,7 @@ func (s *Server) HandleRequest(req *Request) *Response {
 		return NewErrorResponse(req.ID, NewInternalError(err))
 	}
 
-	return NewSuccessResponse(req.ID, result)
+	return NewSuccessResponse(result, req.ID)
 }
 
 func (s *Server) ServeStdio() error {
