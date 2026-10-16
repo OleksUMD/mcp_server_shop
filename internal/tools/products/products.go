@@ -111,7 +111,7 @@ func (p *ProductToolset) handleListProducts(_ context.Context, args map[string]a
 		"limit":  fmt.Sprintf("%d", limit),
 		"offset": fmt.Sprintf("%d", offset),
 	}
-	response, err := p.restClient.Get("/api/v1/products", params)
+	response, err := p.restClient.Get("/products", params)
 	if err != nil {
 		return mcp.CallToolResult{}, fmt.Errorf("failed to fetch products: %w", err)
 	}
@@ -162,7 +162,7 @@ func (p *ProductToolset) searchProducts(_ context.Context, args map[string]any) 
 	if category_id, ok := args["category_id"].(string); ok {
 		params["category_id"] = fmt.Sprintf("%s", category_id)
 	}
-	response, err := p.restClient.Get("/api/v1/search", params)
+	response, err := p.restClient.Get("/search", params)
 	if err != nil {
 		return mcp.CallToolResult{}, fmt.Errorf("failed to search products: %w", err)
 	}
@@ -194,7 +194,7 @@ func (p *ProductToolset) getProductDetails(_ context.Context, args map[string]an
 		return mcp.CallToolResult{}, fmt.Errorf("product_id is required and must be a string of numbers. e.g. 123")
 	}
 
-	response, err := p.restClient.Get(fmt.Sprintf("/api/v1/products/%s", productID), nil)
+	response, err := p.restClient.Get(fmt.Sprintf("/products/%s", productID), nil)
 	if err != nil {
 		return mcp.CallToolResult{}, fmt.Errorf("failed to fetch product: %w", err)
 	}
