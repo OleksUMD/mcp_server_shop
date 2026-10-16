@@ -7,6 +7,7 @@ import (
 	"github.com/OleksUMD/mcp_server_shop/configs"
 	"github.com/OleksUMD/mcp_server_shop/internal/client"
 	"github.com/OleksUMD/mcp_server_shop/internal/mcp"
+	"github.com/OleksUMD/mcp_server_shop/internal/tools/cart"
 	"github.com/OleksUMD/mcp_server_shop/internal/tools/products"
 	"github.com/sirupsen/logrus"
 )
@@ -39,6 +40,7 @@ func main() {
 	toolRegistry := mcp.NewRegistry(logger)
 
 	products.NewProductToolset(toolRegistry, restClient, logger)
+	cart.NewCartToolset(toolRegistry, restClient, logger)
 	toolRegistry.Register(mcp.Tool{
 		Name:        "ping",
 		Description: "A simple ping tool that responds with 'pong'",
